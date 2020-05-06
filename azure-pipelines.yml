@@ -15,7 +15,14 @@ variables:
 steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
-  zipAfterPublish: true
+  
+- task: ArchiveFiles@2
+  displayName: 'packaging into zip'
+  inputs:
+     rootFolderOrFile: '$(Build.BinariesDirectory)'
+     includeRootFolder: true
+     archiveType: 'zip'
+     archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
   
 - task: PublishPipelineArtifact@1
   inputs:
